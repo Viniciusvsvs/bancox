@@ -14,7 +14,7 @@ import java.sql.DriverManager;
  */
 public class Conexao {
     
-    public static Connection conectar(String nomeDoBanco) {
+    public Connection conectar(String nomeDoBanco) {
     	try {
     	    Class.forName("com.mysql.jdbc.Driver");
             String url = "jdbc:mysql://localhost/" + nomeDoBanco;

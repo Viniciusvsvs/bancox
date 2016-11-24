@@ -6,6 +6,7 @@
 package GUI;
 
 import BO.ClienteBO;
+import DAO.ClienteDAO;
 import DTO.ClienteDTO;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,11 +19,15 @@ public class ClienteGUI extends javax.swing.JFrame {
 
     List<ClienteDTO> listObj = new ArrayList<ClienteDTO>();
     ClienteBO clientesBO;
+    private int nCliente = -1;
+    
     /**
      * Creates new form ClienteGUI
      */
-    public ClienteGUI() {
+    public ClienteGUI(String CPFgerente,String nome) {
         initComponents();
+        jTextField1.setText(nome);
+        jTextField2.setText(CPFgerente);
     }
 
     /**
@@ -74,12 +79,32 @@ public class ClienteGUI extends javax.swing.JFrame {
         jLabel10.setText("Nome:");
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/primeiro.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/anterior.png"))); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/proximo.png"))); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/ultimo.png"))); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/novo.png"))); // NOI18N
         jButton5.setText("Novo");
@@ -259,6 +284,10 @@ public class ClienteGUI extends javax.swing.JFrame {
         ClienteDTO c = new ClienteDTO();
         c.setCPF(jtCPF.getText());
         c.setNome(jtNome.getText());
+        c.setAnoNas(Integer.valueOf(jtAno.getText()));
+        c.setTipoConta(jtTipo.getText());
+        c.setNumConta(Integer.valueOf(jtNum.getText()));
+        
         jtAno.getText();
         jtTipo.getText();
         jtNum.getText();
@@ -288,6 +317,32 @@ public class ClienteGUI extends javax.swing.JFrame {
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        ClienteDTO c;
+        List<ClienteDTO> lista = ClienteDAO.pesquisarTodos();
+        c = lista.get(this.nCliente);
+        jTextField1.setText(""); //TODO: Gerente
+        jTextField2.setText(""); //TODO: Gerente
+        jtAno.setText(c.getAnoNas() + "");
+        jtTipo.setText(c.getTipoConta() + "");
+        jtNum.setText(c.getNumConta() + "");
+        jtNome.setText(c.getNome() + "");
+        jtCPF.setText(c.getCPF() + "");
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

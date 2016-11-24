@@ -7,6 +7,7 @@ package DAO;
 
 import Conexao.Conexao;
 import DTO.CartaoDTO;
+import GUI.Main;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,12 +20,12 @@ import java.util.List;
  */
 public class CartaoDAO {
     
-    final String NOMEDOBANCO = "trabalho";
-    final String NOMEDATABELA = "cartao";
+    final static String NOMEDOBANCO = "trabalho";
+    final static String NOMEDATABELA = "cartao";
 
-    public boolean inserir(CartaoDTO cartaoDTO) {
+    public static boolean inserir(CartaoDTO cartaoDTO) {
         try {
-            Connection conn = Conexao.conectar(NOMEDOBANCO);
+            Connection conn = Main.getInstance().getConexao().conectar(NOMEDOBANCO);
             String sql = "INSERT INTO " + NOMEDATABELA +" (NumCartao,AnoCard,Bandeira) VALUES (?,?,?);";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1,Integer.toString(cartaoDTO.getNumCartao()));
@@ -41,9 +42,9 @@ public class CartaoDAO {
         }
     }
 
-    public boolean alterar(CartaoDTO cartaoDTO) {
+    public static boolean alterar(CartaoDTO cartaoDTO) {
         try {
-            Connection conn = Conexao.conectar(NOMEDOBANCO);
+            Connection conn = Main.getInstance().getConexao().conectar(NOMEDOBANCO);
             String sql = "UPDATE " + NOMEDATABELA +
             " SET  NumCartao = ?,  AnoCard = ?, Bandeira = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -61,9 +62,9 @@ public class CartaoDAO {
         }
     }
 
-    public boolean excluir(CartaoDTO cartaoDTO) {
+    public static boolean excluir(CartaoDTO cartaoDTO) {
         try {
-            Connection conn = Conexao.conectar(NOMEDOBANCO);
+            Connection conn = Main.getInstance().getConexao().conectar(NOMEDOBANCO);
             String sql = "DELETE FROM " + NOMEDATABELA + " WHERE NumCartao = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, cartaoDTO.getNumCartao());
@@ -81,9 +82,9 @@ public class CartaoDAO {
     
     
 
-    public boolean existe(CartaoDTO cartaoDTO) {
+    public static boolean existe(CartaoDTO cartaoDTO) {
         try {
-            Connection conn = Conexao.conectar(NOMEDOBANCO);
+            Connection conn = Main.getInstance().getConexao().conectar(NOMEDOBANCO);
             String sql = "SELECT * FROM " + NOMEDATABELA + " WHERE NumCartao = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1,Integer.toString( cartaoDTO.getNumCartao()));
@@ -102,9 +103,9 @@ public class CartaoDAO {
         return false;
     }
 
-    public List<CartaoDTO> pesquisarTodos() {
+    public static List<CartaoDTO> pesquisarTodos() {
         try {
-            Connection conn = Conexao.conectar(NOMEDOBANCO);
+            Connection conn = Main.getInstance().getConexao().conectar(NOMEDOBANCO);
             String sql = "SELECT * FROM " + NOMEDATABELA + ";";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -117,7 +118,7 @@ public class CartaoDAO {
         }
     }
 
-    public List<CartaoDTO> montarLista(ResultSet rs) {
+    public static List<CartaoDTO> montarLista(ResultSet rs) {
         List<CartaoDTO> listObj = new ArrayList<CartaoDTO>();
         try {
             while (rs.next()) {

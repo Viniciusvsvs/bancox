@@ -5,17 +5,36 @@
  */
 package GUI;
 
+import Conexao.Conexao;
+
 /**
  *
  * @author 111000353
  */
 public class Main {
-
-    /**
-     * @param args the command line arguments
-     */
+    
+    private static Main Instance;
+    
+    public static Main getInstance() {
+        return Instance;
+    }
+    
     public static void main(String[] args) {
-        // TODO code application logic here
+        new Main();
+    }
+    
+    private Conexao conexao;
+    
+    //
+    public Main() {
+        Instance = this;
+        this.conexao = new Conexao();
+    }
+    
+    //
+    
+    public Conexao getConexao() {
+        return this.conexao;
     }
     
 }

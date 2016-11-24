@@ -7,6 +7,7 @@ package DAO;
 
 import Conexao.Conexao;
 import DTO.ClienteDTO;
+import GUI.Main;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,14 +21,15 @@ import java.util.List;
 
 public class ClienteDAO {
     
-    final String NOMEDOBANCO = "trabalho";
-    final String NOMEDATABELA = "cliente";
+    final static String NOMEDOBANCO = "trabalho";
+    final static String NOMEDATABELA = "cliente";
 
-    public boolean inserir(ClienteDTO clienteDTO) {
-        try (Connection conn = Conexao.conectar(NOMEDOBANCO)) {
+    public static boolean inserir(ClienteDTO clienteDTO) {
+        try {
+            Connection conn = Main.getInstance().getConexao().conectar(NOMEDOBANCO);
             String sql = "INSERT INTO " + NOMEDATABELA +" (CPF,Nome,AnoNasc,TipoConta,NumConta) VALUES (?,?,?,?,?);";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1,Integer.toString(clienteDTO.getCPF()));
+            ps.setString(1, clienteDTO.getCPF());
             ps.setString(2,clienteDTO.getNome());
             ps.setString(3,Integer.toString(clienteDTO.getAnoNas()));
             ps.setString(4,clienteDTO.getTipoConta());
@@ -42,9 +44,9 @@ public class ClienteDAO {
         return true;
     }
 
-    public boolean alterar(ClienteDTO clienteDTO) {
+    public static boolean alterar(ClienteDTO clienteDTO) {
         try {
-            Connection conn = Conexao.conectar(NOMEDOBANCO);
+            Connection conn = Main.getInstance().getConexao().conectar(NOMEDOBANCO);
             String sql = "UPDATE " + NOMEDATABELA +
             " SET  Nome = ?,  AnoNasc = ?, TipoConta = ?, NumConta = ? WHERE CPF = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -52,7 +54,7 @@ public class ClienteDAO {
             ps.setString(2,Integer.toString(clienteDTO.getAnoNas()));
             ps.setString(3,clienteDTO.getTipoConta());
             ps.setString(4,Integer.toString(clienteDTO.getNumConta()));
-            ps.setInt(5, clienteDTO.getCPF());
+            ps.setString(5, clienteDTO.getCPF());
             ps.executeUpdate();
             ps.close();
             conn.close();
@@ -64,12 +66,12 @@ public class ClienteDAO {
         }
     }
 
-    public boolean excluir(ClienteDTO clienteDTO) {
+    public static boolean excluir(ClienteDTO clienteDTO) {
         try {
-            Connection conn = Conexao.conectar(NOMEDOBANCO);
+            Connection conn = Main.getInstance().getConexao().conectar(NOMEDOBANCO);
             String sql = "DELETE FROM " + NOMEDATABELA + " WHERE CPF = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, clienteDTO.getCPF());
+            ps.setString(1, clienteDTO.getCPF());
             ps.executeUpdate();
             ps.close();
             conn.close();
@@ -83,9 +85,9 @@ public class ClienteDAO {
 
     
 
-    public boolean existe(ClienteDTO clienteDTO) {
+    public static boolean existe(ClienteDTO clienteDTO) {
         try {
-            Connection conn = Conexao.conectar(NOMEDOBANCO);
+            Connection conn = Main.getInstance().getConexao().conectar(NOMEDOBANCO);
             String sql = "SELECT * FROM " + NOMEDATABELA + " WHERE Nome = ?;";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, clienteDTO.getNome());
@@ -104,9 +106,9 @@ public class ClienteDAO {
         return false;
     }
 
-    public List<ClienteDTO> pesquisarTodos() {
+    public static List<ClienteDTO> pesquisarTodos() {
         try {
-            Connection conn = Conexao.conectar(NOMEDOBANCO);
+            Connection conn = Main.getInstance().getConexao().conectar(NOMEDOBANCO);
             String sql = "SELECT * FROM " + NOMEDATABELA + ";";
             PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
@@ -119,12 +121,12 @@ public class ClienteDAO {
         }
     }
 
-    public List<ClienteDTO> montarLista(ResultSet rs) {
-        List<ClienteDTO> listObj = new ArrayList<ClienteDTO>();
+    private static List<ClienteDTO> montarLista(ResultSet rs) {
+        List<ClienteDTO> listObj = new ArrayList<>();
         try {
             while (rs.next()) {
                 ClienteDTO obj = new ClienteDTO();
-                obj.setCPF(rs.getInt(1));
+                obj.setCPF(rs.getString(1));
                 obj.setNome(rs.getString(2));
                 obj.setAnoNas(rs.getInt(3));
                 obj.setTipoConta(rs.getString(4));
